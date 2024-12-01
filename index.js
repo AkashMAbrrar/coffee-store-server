@@ -60,10 +60,26 @@ async function run() {
       res.send(result);
     });
     //  users related api
+    // user read for showing them in the ui
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // User creation
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       console.log("creating a new user", newUser);
       const result = await userCollection.insertOne(newUser);
+      res.send(result);
+    });
+
+    // users Delegation
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
       res.send(result);
     });
 
