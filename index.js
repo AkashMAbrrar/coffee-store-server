@@ -83,6 +83,19 @@ async function run() {
       res.send(result);
     });
 
+    // user login info
+    app.patch("/users", async (req, res) => {
+      const email = req.body.email;
+      const filter = { email };
+      const updatedDoc = {
+        $set: {
+          lastSignInTime: req.body?.lastSignInTime,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDoc);
+      res.send(result);
+    });
+
     app.put("/coffee/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
